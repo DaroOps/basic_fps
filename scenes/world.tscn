@@ -8,6 +8,9 @@
 [sub_resource type="GDScript" id="GDScript_roxvn"]
 script/source = "extends Node3D
 
+@onready var hit_rect = $UI/HitRect
+
+
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
@@ -16,6 +19,12 @@ func _input(event):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _on_player_player_hit():
+	hit_rect.visible = true
+	await get_tree().create_timer(0.2).timeout
+	hit_rect.visible = false
 "
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_t0qmv"]
@@ -64,3 +73,18 @@ mesh = SubResource("PlaneMesh_cr5dc")
 
 [node name="Crypt" parent="Map/NavigationRegion3D" instance=ExtResource("3_i5cho")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.648262, 0, 21.2517)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HitRect" type="ColorRect" parent="UI"]
+visible = false
+layout_mode = 1
+offset_right = 123.0
+offset_bottom = 62.0
+color = Color(0.980392, 0, 0, 0.203922)
+
+[connection signal="player_hit" from="Player" to="." method="_on_player_player_hit"]

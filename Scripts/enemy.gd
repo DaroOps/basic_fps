@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @export var SPEED = 10.0
 const ATTACK_RANGE = 2.0
+const DETECTION_RANGE = 6.0
 
 var player = null
 var state_machine
@@ -35,9 +36,11 @@ func _process(delta):
 	animation_tree.set("parameters/conditions/run", !_target_in_range());
 	#endregion
 	
-	
 	move_and_slide()
 
 func _target_in_range():
 	return global_position.distance_to(player.global_position) < ATTACK_RANGE
 
+func _hit_finished():
+	player.hit()
+	
