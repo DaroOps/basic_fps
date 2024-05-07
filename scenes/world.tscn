@@ -1,18 +1,22 @@
-[gd_scene load_steps=10 format=3 uid="uid://8d2clce6mfsp"]
+[gd_scene load_steps=9 format=3 uid="uid://8d2clce6mfsp"]
 
 [ext_resource type="PackedScene" uid="uid://c5g61ur00o22e" path="res://scenes/player.tscn" id="1_dhc6b"]
 [ext_resource type="Texture2D" uid="uid://b1iqten8o4lph" path="res://Assets/Textures/115.jpg" id="2_p6k4g"]
 [ext_resource type="PackedScene" uid="uid://bsdbsy40wx2u4" path="res://scenes/crypt.tscn" id="3_i5cho"]
-[ext_resource type="PackedScene" uid="uid://dpxricer7ip3a" path="res://scenes/enemy.tscn" id="4_lpt5y"]
 
 [sub_resource type="GDScript" id="GDScript_roxvn"]
 script/source = "extends Node3D
 
 @onready var hit_rect = $UI/HitRect
+@onready var spawners = $Spawners
+@onready var navigation_region = $Map/NavigationRegion3D
 
+var enemy = load(\"res://scenes/enemy.tscn\")
+var instance
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	randomize()
 	
 func _input(event):
 	if event.is_action_pressed(\"ui_cancel\"):
@@ -25,6 +29,18 @@ func _on_player_player_hit():
 	hit_rect.visible = true
 	await get_tree().create_timer(0.2).timeout
 	hit_rect.visible = false
+
+func _get_random_child(parent_node):
+	var randomm_id =  randi() % parent_node.get_child_count()
+	return parent_node.get_child(randomm_id)
+
+
+func _on_enemy_spawn_timer_timeout():
+	var spawn_point = _get_random_child(spawners).global_position
+	instance = enemy.instantiate()
+	instance.position = spawn_point
+	navigation_region.add_child(instance)
+	
 "
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_t0qmv"]
@@ -44,17 +60,9 @@ uv1_triplanar = true
 [node name="World" type="Node3D"]
 script = SubResource("GDScript_roxvn")
 
-[node name="Player" parent="." instance=ExtResource("1_dhc6b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58022, 0)
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
-
-[node name="Enemy" parent="." instance=ExtResource("4_lpt5y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.16972, 0.0221936, -5.52459)
-SPEED = 2.0
-player_path = NodePath("../Player")
 
 [node name="Map" type="Node3D" parent="."]
 
@@ -74,6 +82,9 @@ mesh = SubResource("PlaneMesh_cr5dc")
 [node name="Crypt" parent="Map/NavigationRegion3D" instance=ExtResource("3_i5cho")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.648262, 0, 21.2517)
 
+[node name="Player" parent="Map/NavigationRegion3D" instance=ExtResource("1_dhc6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58022, 0)
+
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -87,4 +98,13 @@ offset_right = 123.0
 offset_bottom = 62.0
 color = Color(0.980392, 0, 0, 0.203922)
 
-[connection signal="player_hit" from="Player" to="." method="_on_player_player_hit"]
+[node name="Spawners" type="Node3D" parent="."]
+
+[node name="Spawn" type="Node3D" parent="Spawners"]
+
+[node name="EnemySpawnTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="player_hit" from="Map/NavigationRegion3D/Player" to="." method="_on_player_player_hit"]
+[connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
