@@ -6,6 +6,8 @@ extends CharacterBody3D
 
 var current_speed = initial_speed
 
+@export var health = 10
+
 const ROTATION_SPEED = 9.0
 const ATTACK_RANGE = 2.0
 const DETECTION_RANGE = 6.0
@@ -66,3 +68,16 @@ func _hit_finished():
 		var dir = global_position.direction_to(player.global_position)
 		player.hit(dir)
 	
+
+
+func _on_area_3d_body_part_hit(dmg):
+	health -= dmg
+	print("hit area")
+	print(health)
+	if health <= 0:
+		queue_free()
+	
+
+
+func _on_collision_shape_3d_visibility_changed():
+	pass # Replace with function body.

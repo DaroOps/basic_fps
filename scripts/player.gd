@@ -25,6 +25,11 @@ var gravity = 9.8
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
+@onready var gun_anim =$Head/Camera3D/Weapon/AnimationPlayer
+@onready var weapon_barrel = $Head/Camera3D/Weapon/RayCast3D
+
+var bullet = load("res://scenes/bullet.tscn")
+var instance 
 
 
 func _ready():
@@ -74,6 +79,15 @@ func _physics_process(delta):
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 2)
 	var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
 	camera.fov = lerp(camera.fov, target_fov, delta * 8.0)
+	
+	#Shooting
+	if Input.is_action_pressed("shoot"):
+		if  !gun_anim.is_playing():
+			gun_anim.play("Shoot")
+			instance = bullet.instantiate()
+			instance.position = weapon_barrel.global_position
+			instance.transform.basis = weapon_barrel.global_transform.basis
+			get_parent().add_child(instance)
 	
 	move_and_slide()
 

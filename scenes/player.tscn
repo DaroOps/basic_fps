@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5g61ur00o22e"]
+[gd_scene load_steps=5 format=3 uid="uid://c5g61ur00o22e"]
 
-[ext_resource type="Script" path="res://Scripts/player.gd" id="1_mb2xb"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_mb2xb"]
+[ext_resource type="PackedScene" uid="uid://k13w5mmog6ue" path="res://scenes/weapon.tscn" id="2_2hnhy"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_7vdmh"]
 
@@ -11,6 +12,8 @@ points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607,
 script = ExtResource("1_mb2xb")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+cast_shadow = 0
 mesh = SubResource("CapsuleMesh_7vdmh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -20,3 +23,6 @@ shape = SubResource("ConvexPolygonShape3D_ovg3m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.898968, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
+
+[node name="Weapon" parent="Head/Camera3D" instance=ExtResource("2_2hnhy")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.273612, -0.290954, -0.415884)
