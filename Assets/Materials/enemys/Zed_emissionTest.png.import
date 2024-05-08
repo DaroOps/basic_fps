@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dgb7tgedigshx"
-path.s3tc="res://.godot/imported/Zed_emissionTest.png-2dc4a246722c87f3856a752465e240c6.s3tc.ctex"
+path.s3tc="res://.godot/imported/Zed_emissionTest.png-f6548f8a7cb3ca2a866519db4915344c.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Materials/Zed_emissionTest.png"
-dest_files=["res://.godot/imported/Zed_emissionTest.png-2dc4a246722c87f3856a752465e240c6.s3tc.ctex"]
+source_file="res://Assets/Materials/enemys/Zed_emissionTest.png"
+dest_files=["res://.godot/imported/Zed_emissionTest.png-f6548f8a7cb3ca2a866519db4915344c.s3tc.ctex"]
 
 [params]
 
