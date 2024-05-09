@@ -50,6 +50,7 @@ func _physics_process(delta):
 			rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * ROTATION_SPEED)
 			#endregionsasdw
 		"Attack":
+			current_speed = 0
 			look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP)
 			
 
@@ -75,6 +76,8 @@ func _on_area_3d_body_part_hit(dmg):
 	print("hit area")
 	print(health)
 	if health <= 0:
+		animation_tree.set("parameters/conditions/die", true);
+		await get_tree().create_timer(6.0).timeout
 		queue_free()
 	
 
