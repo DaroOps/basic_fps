@@ -1,15 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://bqevdfewtfa0v"]
+[gd_scene load_steps=2 format=3 uid="uid://bqevdfewtfa0v"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xlnna"]
-shading_mode = 0
-albedo_color = Color(1, 0.0431373, 0, 1)
+[ext_resource type="Texture2D" uid="uid://d26ble76j45ad" path="res://Assets/textures/decals/gun_decals/bullet_hole.png" id="1_qyaa1"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_ovsqs"]
-material = SubResource("StandardMaterial3D_xlnna")
-radius = 0.3
-height = 0.6
-radial_segments = 12
-rings = 12
-
-[node name="MeshInstance3D" type="MeshInstance3D"]
-mesh = SubResource("SphereMesh_ovsqs")
+[node name="Decal" type="Decal"]
+rotation_order = 0
+size = Vector3(0.2, 0.2, 0.2)
+texture_albedo = ExtResource("1_qyaa1")
+distance_fade_enabled = true
+distance_fade_begin = 20.0

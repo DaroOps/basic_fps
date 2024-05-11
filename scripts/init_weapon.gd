@@ -116,23 +116,36 @@ func _weapon_bob(delta, bob_speed: float, h_bob_amount: float, v_bob_amount: flo
 func _shoot() -> void:
 	var camera = Global.player.CAMERA_CONTROLLER
 	var space_state = camera.get_world_3d().direct_space_state
-	var scree_center  = get_viewport().size / 2
-	var origin  = camera.project_ray_origin(scree_center)
-	var end = origin + camera.project_ray_normal(scree_center) * 1000
+	var screen_center = get_viewport().size / 2
+	print(screen_center)
+	var origin  = camera.project_ray_origin(screen_center)
+	var end = origin + camera.project_ray_normal(screen_center) * 1000
 	var query = PhysicsRayQueryParameters3D.create(origin, end)
 	
 	query.collide_with_bodies = true
 
 	#intersect ray need to be modified if the object its too large
 	var result = space_state.intersect_ray(query)
-	print(result)
+
 	if result:
-		_test_raycat(result.get("position"))
+		_bullet_hole(result.get("position"), result.get("normal"))
 	
-func _test_raycat(pos: Vector3) -> void:
+func _bullet_hole(pos: Vector3, normal : Vector3) -> void:
 	var instance = decal.instantiate()
-	
+
 	get_tree().root.add_child(instance)
-	instance.global_position = pos
+	instance.global_position = pos 
+	
+	instance.look_at(instance.global_transform.origin + normal, Vector3.UP)
+	
+	if normal != Vector3.UP and normal != Vector3.DOWN:
+		instance.rotate_object_local(Vector3(1, 0, 0), 90)
+		instance.global_position += Vector3(0.0 , 0.1, -0.1)
+	
 	await get_tree().create_timer(3.0).timeout
+	var fade_tween: Tween = get_tree().create_tween()
+	fade_tween.tween_interval(2.0)
+	fade_tween.tween_property(instance, "modulate:a", 0, 1.5)
+	await fade_tween.finished
+
 	instance.queue_free()
