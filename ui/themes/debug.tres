@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://clvrupeiscuri"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2tyii"]
+bg_color = Color(0, 0, 0, 0.596078)
+
+[resource]
+MarginContainer/constants/margin_bottom = 10
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 10
+MarginContainer/constants/margin_top = 10
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_2tyii")

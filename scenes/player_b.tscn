@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://c38xlns1akkix"]
+
+[ext_resource type="Script" path="res://scripts/reticle.gd" id="1_us6bd"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1mjel"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sprug"]
+
+[node name="PlayerB" type="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1mjel")
+
+[node name="PlaceHolderMesh" type="MeshInstance3D" parent="CollisionShape3D"]
+
+[node name="CameraController" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
+
+[node name="RayCast3D" type="RayCast3D" parent="CameraController/Camera3D"]
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="CameraController/Camera3D/RayCast3D"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="."]
+shape = SubResource("CapsuleShape3D_sprug")
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Reticle" type="CenterContainer" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_us6bd")
+
+[node name="Top" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+
+[node name="Right" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+
+[node name="Left" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
+
+[node name="Bottom" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0

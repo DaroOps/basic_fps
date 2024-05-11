@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqevdfewtfa0v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xlnna"]
+shading_mode = 0
+albedo_color = Color(1, 0.0431373, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ovsqs"]
+material = SubResource("StandardMaterial3D_xlnna")
+radius = 0.3
+height = 0.6
+radial_segments = 12
+rings = 12
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_ovsqs")

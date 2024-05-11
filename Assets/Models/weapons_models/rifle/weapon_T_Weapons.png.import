@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1iqten8o4lph"
-path.s3tc="res://.godot/imported/115.jpg-cf6d42890b058747caaa2607d4720c3a.s3tc.ctex"
+uid="uid://d4cd5a1n05wia"
+path.s3tc="res://.godot/imported/weapon_T_Weapons.png-53629ada9b01a804c85aab49f8b04c6b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "32688b3beec46658659c2382e0b70fc8"
+}
 
 [deps]
 
-source_file="res://Assets/Textures/115.jpg"
-dest_files=["res://.godot/imported/115.jpg-cf6d42890b058747caaa2607d4720c3a.s3tc.ctex"]
+source_file="res://Assets/Models/weapons_models/rifle/weapon_T_Weapons.png"
+dest_files=["res://.godot/imported/weapon_T_Weapons.png-53629ada9b01a804c85aab49f8b04c6b.s3tc.ctex"]
 
 [params]
 

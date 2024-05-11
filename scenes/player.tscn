@@ -1,15 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5g61ur00o22e"]
+[gd_scene load_steps=15 format=3 uid="uid://c5g61ur00o22e"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_mb2xb"]
 [ext_resource type="PackedScene" uid="uid://k13w5mmog6ue" path="res://scenes/weapon.tscn" id="2_2hnhy"]
+[ext_resource type="Resource" uid="uid://t42tc5m6krpx" path="res://Assets/Models/weapons_models/rifle/rifle.tres" id="3_7hwtt"]
+[ext_resource type="Script" path="res://scripts/reticle.gd" id="3_xxxnw"]
+[ext_resource type="Theme" uid="uid://clvrupeiscuri" path="res://ui/themes/debug.tres" id="4_0l7lb"]
+[ext_resource type="Script" path="res://scripts/utils/debug.gd" id="5_ih1q6"]
+[ext_resource type="Script" path="res://scripts/state_machines/abstract/state_machine.gd" id="6_hauqn"]
+[ext_resource type="Script" path="res://scripts/state_machines/player_machine/idle_player_state.gd" id="7_vjmjn"]
+[ext_resource type="Script" path="res://scripts/state_machines/player_machine/walking_player_state.gd" id="8_gcr8m"]
+[ext_resource type="Script" path="res://scripts/state_machines/player_machine/sprinting_player_State.gd" id="9_hbca2"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_7vdmh"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ovg3m"]
 points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
 
-[node name="Player" type="CharacterBody3D" groups=["players"]]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_yusuy"]
+noise_type = 0
+metadata/_preview_in_3d_space_ = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4acor"]
+noise = SubResource("FastNoiseLite_yusuy")
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("WEAPON_CONTROLLER", "CAMERA_CONTROLLER") groups=["players"]]
 script = ExtResource("1_mb2xb")
+WEAPON_CONTROLLER = NodePath("Head/Camera3D/WeaponRig/Weapon")
+CAMERA_CONTROLLER = NodePath("Head/Camera3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 visible = false
@@ -24,5 +41,84 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.898968, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
-[node name="Weapon" parent="Head/Camera3D" instance=ExtResource("2_2hnhy")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.273612, -0.290954, -0.415884)
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Head/Camera3D"]
+update_mode = 1
+
+[node name="WeaponRig" type="Node3D" parent="Head/Camera3D"]
+
+[node name="Weapon" parent="Head/Camera3D/WeaponRig" instance=ExtResource("2_2hnhy")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.2, -0.2, -0.2)
+WEAPON_TYPE = ExtResource("3_7hwtt")
+sway_noise = SubResource("NoiseTexture2D_4acor")
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Reticle" type="CenterContainer" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_xxxnw")
+
+[node name="Top" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+
+[node name="Right" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+
+[node name="Left" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
+
+[node name="Bottom" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0
+
+[node name="DebugPanel" type="PanelContainer" parent="UserInterface"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 50.0
+theme = ExtResource("4_0l7lb")
+script = ExtResource("5_ih1q6")
+
+[node name="MarginContainer" type="MarginContainer" parent="UserInterface/DebugPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/DebugPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="JumpingPlayerState" type="Node" parent="UserInterface/DebugPanel/MarginContainer"]
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("CURRENT_STATE")]
+script = ExtResource("6_hauqn")
+CURRENT_STATE = NodePath("IdlePlayerState")
+
+[node name="IdlePlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("7_vjmjn")
+
+[node name="WalkingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("8_gcr8m")
+
+[node name="SprintingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("9_hbca2")

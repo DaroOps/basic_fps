@@ -6,8 +6,7 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7y0b"]
 albedo_texture = ExtResource("2_31383")
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6bhs8"]
-points = PackedVector3Array(0.3752, 0.0335885, 0.526291, 0.282722, 0.39197, 0.464173, 0.335976, 0.0335885, 0.5656, 0.3752, 0, 0.526291, 0.3752, 0.0335885, -0.526402, -0.00051415, 0.531948, 0.464173, 0.282722, 0.39197, -0.464284, 0.335976, 0, 0.5656, -0.336049, 0.0335885, 0.5656, 0.3752, 0, -0.526402, 0.335976, 0.0335885, -0.5656, -0.282796, 0.39197, 0.464173, -0.00051415, 0.531948, -0.464284, -0.336049, 0, 0.5656, -0.3752, 0.0335885, 0.526291, 0.335976, 0, -0.5656, -0.336049, 0.0335885, -0.5656, -0.282796, 0.39197, -0.464284, -0.3752, 0, 0.526291, -0.3752, 0.0335885, -0.526402, -0.336049, 0, -0.5656, -0.3752, 0, -0.526402)
+[sub_resource type="BoxShape3D" id="BoxShape3D_4a64g"]
 
 [node name="Crypt" instance=ExtResource("1_vwwqd")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
@@ -20,4 +19,4 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
-shape = SubResource("ConvexPolygonShape3D_6bhs8")
+shape = SubResource("BoxShape3D_4a64g")
